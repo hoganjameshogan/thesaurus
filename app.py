@@ -1,6 +1,7 @@
 import json
 import difflib
-from difflib import SequenceMatcher
+from difflib import SequenceMatcher , get_close_matches
+
 
 data = {}
 
@@ -10,20 +11,22 @@ with open('data.json') as d:
 # print(data['success'])
 
 def check(word):
-    for x in data:
-        if SequenceMatcher(None, word, x).ratio() > .85:
+    for x in data.keys():
+        if SequenceMatcher(None, word, x).ratio() > .65:
             ans = input(f"Did you mean {x}?\n").lower()
             if ans == 'yes' or ans == 'y':
                 return x
             if ans == 'no' or ans == 'n' :
                 return 'none'
+        
             
 
 
 def translate(word):
+    print(word)
     word = word.lower()
     index = 0
-    if word not in data:
+    if word not in data and word != "\exit":
         correct = check(word)
         if correct == 'none':
             print('No definition available')
